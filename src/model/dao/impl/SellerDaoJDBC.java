@@ -100,8 +100,26 @@ public class SellerDaoJDBC implements SellerDao{
 	}
 
 	@Override
+	//Método para deletar do banco de dados por id
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("DELETE FROM seller WHERE Id = ?");
+			
+			st.setInt(1, id);
+			
+			int arrowsAffected = st.executeUpdate();
+			
+			if(arrowsAffected == 0) {
+				throw new DbException("Usuário não encontrado.");
+			}
+		}
+		catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
 		
 	}
 
